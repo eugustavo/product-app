@@ -12,6 +12,7 @@ import { api } from "@/services/api";
 import { ButtonContainer, ButtonText, Container, InputsContainer, UserProfileTitle } from "./styles";
 import { useNetwork } from "@/contexts/NetworkContext";
 import { db } from "@/database/local";
+import { toast } from "@/libs/toast";
 
 export function UserProfile() {
   const [userLogged, setUserLogged] = useState<User>();
@@ -34,7 +35,10 @@ export function UserProfile() {
       setUserLogged(data)
       await db.saveUser(data)
     } catch (error) {
-      console.log(error)
+      toast({
+        type: 'error',
+        message: 'Não foi possível buscar os dados do usuário, tente novamente mais tarde.'
+      })
     } finally {
       setLoading(false)
     }

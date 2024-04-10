@@ -10,6 +10,7 @@ import { cnpj, phone } from "@/utils/format";
 import { Container, EnterpriseProfileTitle, InputsContainer } from "./styles";
 import { useNetwork } from "@/contexts/NetworkContext";
 import { db } from "@/database/local";
+import { toast } from "@/libs/toast";
 
 export function EnterpriseProfile() {
   const [enterprise, setEnterprise] = useState<Enterprise>();
@@ -35,7 +36,10 @@ export function EnterpriseProfile() {
       setEnterprise(data)
       await db.saveEnterprise(data)
     } catch (error) {
-      console.log(error)
+      toast({
+        type: 'error',
+        message: 'Não foi possível buscar os dados da empresa, tente novamente mais tarde.'
+      })
     } finally {
       setLoading(false)
     }

@@ -55,6 +55,31 @@ export function ScanProduct() {
     if (!barCode) return;
 
     try {
+      if (!connected) {
+        const products = await db.getProducts();
+        const product = products.find(p => p.barCode === barCode);
+
+        if (product === undefined) {
+          Alert.alert(
+            "Produto não encontrado",
+            "O produto não foi encontrado na base de dados. Verifique o código de barras e tente novamente.",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  setScanned(false);
+                  return
+                }
+              }
+            ]
+          );
+        }
+
+        setScanned(true);
+        setProduct(product as Product);
+        return
+      }
+
       const { data: product } = await api.post('/inventory.get-product', {
         barCode
       });

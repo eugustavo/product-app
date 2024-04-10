@@ -75,7 +75,12 @@ export function EditProduct() {
         const productToEdit = products.find(product => product.barCode === productBarCode)
 
         if (!productToEdit) {
-          throw new Error('Produto não encontrado')
+          toast({
+            message: 'Produto não encontrado',
+            type: 'error'
+          })
+
+          return
         }
 
         setProduct(productToEdit)
@@ -87,8 +92,10 @@ export function EditProduct() {
 
       setProduct(data[0])
     } catch (error) {
-      console.log(error)
-      throw new Error('Erro ao buscar produto')
+      toast({
+        message: 'Erro ao buscar produto. Tente novamente mais tarde.',
+        type: 'error'
+      })
     } finally {
       setLoading(false)
     }
@@ -108,14 +115,18 @@ export function EditProduct() {
     try {
       if (!connected) {
         const products = await db.getProducts()
-        const productIndex = products.findIndex(product => product.barCode === product.barCode)
+        const productIndex = products.findIndex(p => p.barCode === product.barCode)
 
         if (productIndex === -1) {
-          throw new Error('Produto não encontrado')
+          toast({
+            message: 'Produto não encontrado na base de dados local',
+            type: 'error'
+          })
+
+          return
         }
 
         products[productIndex].quantity = Number(data.quantity)
-
         await db.saveProducts(products)
         
         toast({
@@ -138,8 +149,10 @@ export function EditProduct() {
         type: 'success'
       })
     } catch (error) {
-      console.log(error)
-      throw new Error('Erro ao editar produto')
+      toast({
+        message: 'Erro ao editar produto. Tente novamente mais tarde.',
+        type: 'error'
+      })
     } finally {
       setUpdating(false)
     }

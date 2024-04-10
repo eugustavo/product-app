@@ -28,6 +28,7 @@ import {
   FilterOption,
   FilterOptionText,
 } from "./styles";
+import { toast } from '@/libs/toast';
 
 const schema = z.object({
   search: z.string().nullable(),
@@ -65,8 +66,18 @@ export function ListProducts() {
       await db.saveProducts(data);
     } catch (err) {
       if (err instanceof AppError) {
-        console.log(err.message);
+        toast({
+          type: 'error',
+          message: err.message
+        })
+
+        return
       }
+
+      toast({
+        type: 'error',
+        message: 'Não foi possível buscar os produtos, tente novamente mais tarde.'
+      })
     } finally {
       setLoading(false);
     }
@@ -110,7 +121,10 @@ export function ListProducts() {
 
       setProducts(data);
     } catch (err) {
-      console.log(err)
+      toast({
+        type: 'error',
+        message: 'Não foi possível buscar os produtos, tente novamente mais tarde.'
+      })
     }
   }
 
