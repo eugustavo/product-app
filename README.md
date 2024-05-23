@@ -36,8 +36,3 @@ $ npx expo start
 ```bash
 $ npm run test
 ```
-
-
-
-https://github.com/eugustavo/product-app/assets/25755550/8f696f05-21f4-4af9-840a-cf8f4fae886a
-
